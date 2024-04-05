@@ -1,0 +1,113 @@
+using System;
+
+public class ConnectFour
+{
+    private const int Rows = 6;
+    private const int Columns = 7;
+
+    private char[,] board = new char[Rows, Columns];
+    private char currentPlayer = 'X'; // Starting player
+
+    public void InitializeBoard()
+    {
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int col = 0; col < Columns; col++)
+            {
+                board[row, col] = ' '; // Empty space
+            }
+        }
+    }
+
+    public void DisplayBoard()
+    {
+        Console.WriteLine(" 1 2 3 4 5 6 7");
+        Console.WriteLine("---------------");
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int col = 0; col < Columns; col++)
+            {
+                Console.Write($"|{board[row, col]}");
+            }
+            Console.WriteLine("|");
+            Console.WriteLine("---------------");
+        }
+    }
+
+    public bool IsColumnFull(int col)
+    {
+        return board[0, col] != ' ';
+    }
+
+    public void DropPiece(int col)
+    {
+        for (int row = Rows - 1; row >= 0; row--)
+        {
+            if (board[row, col] == ' ')
+            {
+                board[row, col] = currentPlayer;
+                break;
+            }
+        }
+    }
+
+    public bool CheckForWin()
+    {
+        return false; // Placeholder
+    }
+
+    public void Play()
+    {
+        InitializeBoard();
+        bool gameOver = false;
+
+        while (!gameOver)
+        {
+            DisplayBoard();
+            Console.WriteLine($"Player {currentPlayer}'s turn.");
+            Console.Write("Enter column (1-7): ");
+            int col = int.Parse(Console.ReadLine()) - 1;
+
+            if (col < 0 || col >= Columns || IsColumnFull(col))
+            {
+                Console.WriteLine("Invalid move! Try again.");
+                continue;
+            }
+
+            DropPiece(col);
+            gameOver = CheckForWin();
+
+            if (gameOver)
+            {
+                DisplayBoard();
+                Console.WriteLine($"Player {currentPlayer} wins!");
+            }
+            else if (IsBoardFull())
+            {
+                DisplayBoard();
+                Console.WriteLine("It's a draw!");
+                break;
+            }
+
+            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X'; // Switch players
+        }
+    }
+
+    public bool IsBoardFull()
+    {
+        for (int col = 0; col < Columns; col++)
+        {
+            if (!IsColumnFull(col))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void Main(string[] args)
+    {
+        ConnectFour game = new ConnectFour();
+        game.Play();
+    }
+}
