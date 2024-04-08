@@ -51,10 +51,70 @@ public class ConnectFour
         }
     }
 
-    public bool CheckForWin()
+public bool CheckForWin()
+{
+    // Check horizontal
+    for (int row = 0; row < Rows; row++)
     {
-        return false; // Placeholder
+        for (int col = 0; col <= Columns - 4; col++)
+        {
+            if (board[row, col] != ' ' &&
+                board[row, col] == board[row, col + 1] &&
+                board[row, col] == board[row, col + 2] &&
+                board[row, col] == board[row, col + 3])
+            {
+                return true; // Win horizontally
+            }
+        }
     }
+
+    // Check vertical
+    for (int row = 0; row <= Rows - 4; row++)
+    {
+        for (int col = 0; col < Columns; col++)
+        {
+            if (board[row, col] != ' ' &&
+                board[row, col] == board[row + 1, col] &&
+                board[row, col] == board[row + 2, col] &&
+                board[row, col] == board[row + 3, col])
+            {
+                return true; // Win vertically
+            }
+        }
+    }
+
+    // Check diagonals (top-left to bottom-right)
+    for (int row = 0; row <= Rows - 4; row++)
+    {
+        for (int col = 0; col <= Columns - 4; col++)
+        {
+            if (board[row, col] != ' ' &&
+                board[row, col] == board[row + 1, col + 1] &&
+                board[row, col] == board[row + 2, col + 2] &&
+                board[row, col] == board[row + 3, col + 3])
+            {
+                return true; // Win diagonally (top-left to bottom-right)
+            }
+        }
+    }
+
+    // Check diagonals (top-right to bottom-left)
+    for (int row = 0; row <= Rows - 4; row++)
+    {
+        for (int col = 3; col < Columns; col++)
+        {
+            if (board[row, col] != ' ' &&
+                board[row, col] == board[row + 1, col - 1] &&
+                board[row, col] == board[row + 2, col - 2] &&
+                board[row, col] == board[row + 3, col - 3])
+            {
+                return true; // Win diagonally (top-right to bottom-left)
+            }
+        }
+    }
+
+    return false; // No win detected
+}
 
     public void Play()
     {
